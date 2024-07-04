@@ -1,5 +1,6 @@
 import client from "./db.js"
 import { connectDB } from "./db.js"
+import { createUser } from "./users.js"
 
 const dropTables = async()=>{
     try{
@@ -76,11 +77,23 @@ const createTables = async ()=>{
     }
 }
 
+const createInitialData = async()=>{
+    try{
+        await createUser({
+            username: "tyler",
+            password: "password123"
+        })
+    }catch(e){
+        console.error('Failure to initialize data')
+    }
+}
+
 const rebuildDB = async()=>{
     try{
         await connectDB();
         await dropTables();
         await createTables();
+        await createInitialData();
     }catch(e){
         console.error('Failed to rebuild database')
     }finally{
