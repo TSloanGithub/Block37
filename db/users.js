@@ -14,9 +14,9 @@ const getAllUsers = async () =>{
 
 const getUserByUsername = async (username) =>{
     try{
-        const { rows } = await client.query(`SELECT * FROM CUSTOMERS WHERE username = $1`,[username])
-        console.log("selected users")
-        return rows[0]
+        const { rows } = await client.query(`SELECT * FROM users WHERE username = $1`,[username])
+        console.log("selected user:", rows)
+        return rows;
     }catch(e){
         console.error(`Failure to retrieve ${username}`)
     }
@@ -36,6 +36,7 @@ const createUser = async({username, password})=>{
         console.error('Failure to create new user',e)
     }
 }
+
 
 export {
     getAllUsers,

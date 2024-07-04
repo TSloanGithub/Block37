@@ -1,6 +1,8 @@
 import client from "./db.js"
 import { connectDB } from "./db.js"
 import { createUser } from "./users.js"
+import { getAllProducts, getProductByID, createProduct } from "./products.js"
+
 
 const dropTables = async()=>{
     try{
@@ -30,7 +32,7 @@ const createTables = async ()=>{
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 price MONEY NOT NULL,
-                details VARCHAR(255),
+                details TEXT,
                 inStock BOOLEAN,
                 quantity INTEGER NOT NULL
             )
@@ -83,6 +85,13 @@ const createInitialData = async()=>{
             username: "tyler",
             password: "password123"
         })
+        await createProduct({
+            name: "LOTR",
+            price: "$10.00",
+            details:"Lord of the rings",
+            inStock: true,
+            quantity: 1
+        })
     }catch(e){
         console.error('Failure to initialize data')
     }
@@ -100,4 +109,13 @@ const rebuildDB = async()=>{
         client.end();
     }
 }
+
 rebuildDB();
+
+
+/*    id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                price MONEY NOT NULL,
+                details VARCHAR(255),
+                inStock BOOLEAN,
+                quantity INTEGER NOT NULL*/
