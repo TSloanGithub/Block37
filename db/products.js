@@ -1,6 +1,7 @@
 import client from "./db.js";
 
-/*CREATE TABLE IF NOT EXISTS products(
+/* Put this here so that I can see what I need to use for my createProduct
+    CREATE TABLE IF NOT EXISTS products(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price MONEY NOT NULL,
