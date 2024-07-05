@@ -1,19 +1,25 @@
-import pg from 'pg'
+import pg from 'pg';
 
 const { Client } = pg;
 
-const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:3001/book_fair"
+const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432/book_fair";
 
-export const client = new Client(DATABASE_URL);
+const client = new Client({
+    connectionString: DATABASE_URL,
+});
 
 export const connectDB = async () => {
-    try{
+    try {
         await client.connect();
+        console.log(`Connected to database at ${DATABASE_URL}`);
 
         await client.query(`
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-            `)
-    }catch(e){
-        console.error(`Failure to connect to ${DATABASE_URL}`)
+        `);
+    } catch (e) {
+        console.error(`Failed to connect to ${DATABASE_URL}`, e);
+        throw e; 
     }
-}
+};
+
+export default client;
