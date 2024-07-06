@@ -4,6 +4,7 @@ const { Client } = pg;
 
 const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432/book_fair";
 
+// Use the desired structure for initializing the Client
 const client = new Client({
     connectionString: DATABASE_URL,
 });
