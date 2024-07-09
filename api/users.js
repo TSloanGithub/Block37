@@ -11,7 +11,6 @@ router.get('/users', async (req, res) => {
     }
 });
 
-
 router.get('/users/:username', async (req, res) => {
     try {
         const user = await getUserByUsername(req.params.username);
