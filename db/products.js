@@ -1,4 +1,4 @@
-import client from "./db.js";
+import client from "../db.js";
 
 /* Put this here so that I can see what I need to use for my createProduct
     CREATE TABLE IF NOT EXISTS products(
