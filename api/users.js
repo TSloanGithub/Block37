@@ -1,6 +1,11 @@
 import express from 'express';
 import { getAllUsers, getUserByUsername, createUser } from '../db/users.js'; 
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 const router = express.Router();
+
+const jwt_secret = "12345"
+
 router.get('/users', async (req, res) => {
     try {
         const users = await getAllUsers();
@@ -35,5 +40,31 @@ router.post('/users', async (req, res) => {
         res.status(500).json({ error: 'Failed to create new user' });
     }
 });
+
+router.post("/users/login", async (req,res)=>{
+    try{
+        const { username, password} = req.body
+        const customer = await getUserByUsername(username)
+
+        if(customer){
+
+            if(await bcrypt.compare(password, customer.password)){
+                const token = jwt.sign(
+                    {
+                        id: customer.id,
+                        username: customer.username
+                    }, jwt_secret,
+                    {expiresIn: "1w"}
+                )
+                res.send({message: "login successful!", token:token})
+            }else{
+                res.send({message: "password does not match!!"})
+            }
+        }else{
+                res.send({message: "user not found!"})
+            }
+        }catch(e){
+        console.error('Failed to log in', e)
+    }});
 
 export { router as userRoutes };
