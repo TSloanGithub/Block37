@@ -3,7 +3,6 @@ import { getAllCarts, getCartByID, getCartByUserID, createCart, deleteCart } fro
 
 const router = express.Router();
 
-// Route to get all carts
 router.get('/carts', async (req, res) => {
     try {
         const carts = await getAllCarts();
@@ -13,7 +12,6 @@ router.get('/carts', async (req, res) => {
     }
 });
 
-// Route to get a cart by ID
 router.get('/carts/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -28,7 +26,6 @@ router.get('/carts/:id', async (req, res) => {
     }
 });
 
-// Route to get carts by user ID
 router.get('/carts/user/:user_id', async (req, res) => {
     const { user_id } = req.params;
     try {
@@ -39,7 +36,6 @@ router.get('/carts/user/:user_id', async (req, res) => {
     }
 });
 
-// Route to create a new cart
 router.post('/carts', async (req, res) => {
     const { user_id, product_id, quantity } = req.body;
     try {
@@ -50,7 +46,6 @@ router.post('/carts', async (req, res) => {
     }
 });
 
-// Route to delete a cart by ID
 router.delete('/carts/:id', async (req, res) => {
     const { id } = req.params;
     try {
