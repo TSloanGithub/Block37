@@ -31,23 +31,28 @@ const getCartByID = async (id) => {
     }
 }
 
-const getCartByUserID = async (user_id) => {
+const getCartByUserID = async (users_id) => {
     try {
-        const { rows } = await client.query('SELECT * FROM carts WHERE user_id = $1', [user_id]);
-        console.log(`Carts for user ${user_id}:`, rows);
+        // const { rows } = await client.query('SELECT * FROM carts WHERE user_id = $1', [user_id]);
+        const { rows } = await client.query(`
+            SELECT c.*, p.* FROM carts AS c
+            JOIN products AS p ON p.id = c.products_id
+            WHERE c.users_id = $1
+            `, [user_id]);
+        console.log(`Carts for user ${users_id}:`, rows);
         return rows;
     } catch (e) {
         console.error('Failed to get carts by user ID', e);
     }
 }
 
-const createCart = async ({ user_id, product_id, quantity }) => {
+const createCart = async ({ users_id, products_id, quantity, price }) => {
     try {
         const { rows } = await client.query(`
-            INSERT INTO carts (user_id, product_id, quantity)
-            VALUES ($1, $2, $3)
+            INSERT INTO carts (users_id, products_id, quantity, price)
+            VALUES ($1, $2, $3, $4)
             RETURNING *
-        `, [user_id, product_id, quantity]);
+        `, [users_id, products_id, quantity, price]);
         console.log("Created cart:", rows);
         return rows[0];
     } catch (e) {

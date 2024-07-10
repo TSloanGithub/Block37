@@ -6,10 +6,10 @@ import orderRouter from './api/orders.js';
 import cartRouter from "./api/cart.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { connectDB } from './db.js'; 
+import { connectDB } from './db/db.js'; 
 
 const app = express();
-const PORT = process.env.PORT || 5432;
+const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

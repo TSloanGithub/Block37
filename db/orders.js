@@ -5,7 +5,7 @@ import client from "./db.js";
 const getAllOrders = async ()=>{
     try{
         const { rows } = await client.query(`SELECT * FROM orders`)
-        console.log('Orders:',rows);
+        console.log('All Orders:',rows);
         return rows;
 
     }catch(e){
@@ -24,3 +24,11 @@ const getOrdersByUserId = async (users_id) =>{
 }
 
 // const getOrdersByProductName = async (name)
+
+// const createOrder = async()
+
+
+export{
+    getAllOrders,
+    getOrdersByUserId
+}

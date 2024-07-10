@@ -67,4 +67,4 @@ router.post("/users/login", async (req,res)=>{
         console.error('Failed to log in', e)
     }});
 
-export { router as userRoutes };
+export default router;

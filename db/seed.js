@@ -1,6 +1,9 @@
 import client from "./db.js"
 import { connectDB } from "./db.js"
 import { createUser } from "./users.js"
+import { createProduct } from "./products.js"
+import { createReview, getAllReviews } from "./reviews.js"
+import { createCart } from "./cart.js"
 
 const dropTables = async()=>{
     try{
@@ -45,7 +48,7 @@ const createTables = async ()=>{
             )
         `)
         await client.query(`
-            CREATE TABLE IF NOT EXISTS cart(
+            CREATE TABLE IF NOT EXISTS carts(
                 id SERIAL PRIMARY KEY,
                 products_id INTEGER REFERENCES products(id) NOT NULL,
                 users_id uuid REFERENCES users(id),
@@ -79,12 +82,31 @@ const createTables = async ()=>{
 
 const createInitialData = async()=>{
     try{
-        await createUser({
+        const user = await createUser({
             username: "tyler",
             password: "password123"
         })
+        const product = await createProduct({
+            name: "Green Eggs and Ham",
+            price: "$10",
+            details: "Book by Dr. Seuss",
+            inStock: true,
+            quantity: 10
+        })
+        await createReview({
+            products_id: product.id,
+            users_id: user.id,
+            rating: 5,
+            comments: "This is the best book ever"
+        })
+        await createCart({
+            users_id: user.id,
+            products_id: product.id,
+            quantity: 4,
+            price: "$10"
+        })
     }catch(e){
-        console.error('Failure to initialize data')
+        console.error('Failure to initialize data',e)
     }
 }
 
@@ -94,6 +116,7 @@ const rebuildDB = async()=>{
         await dropTables();
         await createTables();
         await createInitialData();
+        await getAllReviews();
     }catch(e){
         console.error('Failed to rebuild database')
     }finally{

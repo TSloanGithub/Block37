@@ -1,5 +1,6 @@
 import express from 'express'; 
-import {getAllOrders, getOrdersByUserId, getOrdersByProductName} from './db/order.js';
+import {getAllOrders, getOrdersByUserId } from '../db/orders.js';
+// getOrdersByProductName
 
 const router = express.Router();
 
