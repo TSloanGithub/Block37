@@ -17,21 +17,15 @@ const getAllOrders = async ()=>{
 
 const getOrdersByUserId = async (users_id) =>{
     try{
-        const { rows } = await client.query(`SELECT * FROM orders WHERE username = $1`,[users_id])
+        const { rows } = await client.query(`SELECT * FROM orders WHERE users_id = $1`,[users_id])
         console.log(`orders:`,rows)
         return rows;
     }catch(e){
-        console.error(`Failed to retrieve orders by id`)
+        console.error(`Failed to retrieve orders by id`,e)
     }
 }
 
-// const getOrdersByProductName = async (name) =>{
-//     try{
 
-//     }catch(e){
-//         console.error
-//     }
-// }
 
 //"+" forces the type to be a number, substring returns the string starting at the specified index
 const createOrder = async({users_id})=>{
