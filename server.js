@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import userRoutes  from './api/users.js'; 
 import orderRouter from './api/orders.js';
 import cartRouter from "./api/cart.js";
+import reviews from './api/reviews.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB } from './db/db.js'; 
@@ -16,7 +17,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(bodyParser.json());
-app.use('/api', productsRouter, userRoutes , orderRouter, cartRouter );
+app.use('/api', productsRouter, userRoutes , orderRouter, cartRouter, reviews );
 
 app.use(express.static('public'));
 

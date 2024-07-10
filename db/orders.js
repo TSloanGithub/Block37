@@ -1,8 +1,6 @@
 import { getCartByUserID } from "./cart.js";
 import client from "./db.js";
 
-
-
 //table name is: "orders"
 const getAllOrders = async ()=>{
     try{
