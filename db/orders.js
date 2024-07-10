@@ -1,4 +1,6 @@
+import { getCartByUserID } from "./cart.js";
 import client from "./db.js";
+
 
 
 //table name is: "orders"
@@ -23,12 +25,36 @@ const getOrdersByUserId = async (users_id) =>{
     }
 }
 
-// const getOrdersByProductName = async (name)
+// const getOrdersByProductName = async (name) =>{
+//     try{
 
-// const createOrder = async()
+//     }catch(e){
+//         console.error
+//     }
+// }
+
+//"+" forces the type to be a number, substring returns the string starting at the specified index
+const createOrder = async({users_id})=>{
+    try{
+        const cart = await getCartByUserID(users_id)
+        const orderTotal = cart.reduce((acc, item)=>{
+            return acc + (+item.price.substring(1)) * item.quantity
+        },0)
+        const { rows } = await client.query(`
+            INSERT INTO orders(users_id, orderTotal)
+            VALUES ($1, $2)
+            RETURNING *
+            `,[users_id, orderTotal])
+        console.log("Created Order:", rows)
+        return rows;
+    }catch(e){
+        console.error('Failed to create order',e)
+    }
+}
 
 
 export{
     getAllOrders,
-    getOrdersByUserId
+    getOrdersByUserId,
+    createOrder
 }

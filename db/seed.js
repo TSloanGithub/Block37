@@ -4,6 +4,7 @@ import { createUser } from "./users.js"
 import { createProduct } from "./products.js"
 import { createReview, getAllReviews } from "./reviews.js"
 import { createCart } from "./cart.js"
+import { createOrder } from "./orders.js"
 
 const dropTables = async()=>{
     try{
@@ -60,17 +61,15 @@ const createTables = async ()=>{
             CREATE TABLE IF NOT EXISTS orders(
                 id SERIAL PRIMARY KEY,
                 users_id uuid REFERENCES users(id) NOT NULL,
-                products_id INTEGER REFERENCES products(id) NOT NULL,
                 orderTotal MONEY NOT NULL,
-                orderDate TIMESTAMP DEFAULT now(),
-                productPrice MONEY NOT NULL,
-                quantity INTEGER CHECK (quantity BETWEEN 0 and 1000)
+                orderDate TIMESTAMP DEFAULT now()
             )
         `)
         await client.query(`
             CREATE TABLE IF NOT EXISTS orderItems(
                 id SERIAL PRIMARY KEY,
                 products_id INTEGER REFERENCES products(id) NOT NULL,
+                orders_id INTEGER REFERENCES orders(id) NOT NULL,
                 quantity INTEGER CHECK (quantity BETWEEN 0 and 1000),
                 price MONEY NOT NULL
             )
@@ -104,6 +103,9 @@ const createInitialData = async()=>{
             products_id: product.id,
             quantity: 4,
             price: "$10"
+        })
+        await createOrder({
+            users_id: user.id,
         })
     }catch(e){
         console.error('Failure to initialize data',e)

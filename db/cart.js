@@ -35,10 +35,10 @@ const getCartByUserID = async (users_id) => {
     try {
         // const { rows } = await client.query('SELECT * FROM carts WHERE user_id = $1', [user_id]);
         const { rows } = await client.query(`
-            SELECT c.*, p.* FROM carts AS c
+            SELECT c.*, p.id AS product_id, p.name, p.details FROM carts AS c
             JOIN products AS p ON p.id = c.products_id
             WHERE c.users_id = $1
-            `, [user_id]);
+            `, [users_id]);
         console.log(`Carts for user ${users_id}:`, rows);
         return rows;
     } catch (e) {
